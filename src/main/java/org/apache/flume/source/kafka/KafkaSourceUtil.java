@@ -22,8 +22,6 @@ import java.util.Properties;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.javaapi.consumer.ConsumerConnector;
-import kafka.javaapi.producer.Producer;
-import kafka.producer.ProducerConfig;
 
 import org.apache.flume.Context;
 import org.slf4j.Logger;
@@ -44,12 +42,6 @@ public class KafkaSourceUtil {
 			}
 		}
 		return props;
-	}
-	public static Producer<String, String> getProducer(Context context) {
-		log.info(context.toString());
-		Producer<String, String> producer;
-		producer = new Producer<String, String>(new ProducerConfig(getKafkaConfigProperties(context)));
-		return producer;
 	}
 	public static ConsumerConnector getConsumer(Context context) throws IOException, InterruptedException {
 		log.info(context.toString());
