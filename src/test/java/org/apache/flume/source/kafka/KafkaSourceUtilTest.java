@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class KafkaUtilTest {
+public class KafkaSourceUtilTest {
 	private Properties props = new Properties();
 
 	@Before
@@ -35,7 +35,7 @@ public class KafkaUtilTest {
 		context.put("consumer.timeout", "10");
 		context.put("type", "KafkaSource");
 		context.put("topic", "test");
-		props = KafkaUtil.getKafkaConfigProperties(context);
+		props = KafkaSourceUtil.getKafkaConfigProperties(context);
 	}
 
 	@After

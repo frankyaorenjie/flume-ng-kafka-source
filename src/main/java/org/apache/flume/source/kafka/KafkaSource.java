@@ -80,7 +80,7 @@ public class KafkaSource extends AbstractSource implements Configurable, Pollabl
 	public void configure(Context context) {
 		this.topic = context.getString("topic");
 		try {
-			this.consumer = KafkaUtil.getConsumer(context);
+			this.consumer = KafkaSourceUtil.getConsumer(context);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
