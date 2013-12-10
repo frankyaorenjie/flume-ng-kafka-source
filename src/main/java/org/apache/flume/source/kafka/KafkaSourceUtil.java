@@ -44,7 +44,6 @@ public class KafkaSourceUtil {
 		return props;
 	}
 	public static ConsumerConnector getConsumer(Context context) throws IOException, InterruptedException {
-		log.info(context.toString());
 		ConsumerConfig consumerConfig = new ConsumerConfig(getKafkaConfigProperties(context));
 		ConsumerConnector consumer = Consumer.createJavaConsumerConnector(consumerConfig);
 		return consumer;

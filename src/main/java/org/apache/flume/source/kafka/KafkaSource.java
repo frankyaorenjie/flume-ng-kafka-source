@@ -32,17 +32,21 @@ import org.apache.flume.Event;
 import org.apache.flume.EventDeliveryException;
 import org.apache.flume.PollableSource;
 import org.apache.flume.conf.Configurable;
+import org.apache.flume.conf.ConfigurationException;
 import org.apache.flume.event.SimpleEvent;
 import org.apache.flume.source.AbstractSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * A Source for Kafka which reads messages from kafka. I use this in company production environment 
+ * and its performance is good. Over 100k messages per second can be read from kafka in one source.<p>
+ * <tt>zk.connect: </tt> the zookeeper ip kafka use.<p>
+ * <tt>topic: </tt> the topic to read from kafka.<p>
+ * <tt>groupid: </tt> the groupid of consumer group.<p>
+ */
 public class KafkaSource extends AbstractSource implements Configurable, PollableSource {
-
-	/**
-	 * @param args
-	 */
 	private static final Logger log = LoggerFactory.getLogger(KafkaSource.class);
 	private ConsumerConnector consumer;
 	private ConsumerIterator<Message> it;
@@ -72,24 +76,34 @@ public class KafkaSource extends AbstractSource implements Configurable, Pollabl
 			getChannelProcessor().processEventBatch(eventList);
 			return Status.READY;
 		} catch (Exception e) {
-			log.error("KafkaSource EXCEPTION, {}", e);
+			log.error("KafkaSource EXCEPTION, {}", e.getMessage());
 			return Status.BACKOFF;
 		}
 	}
 
 	public void configure(Context context) {
-		this.topic = context.getString("topic");
+		topic = context.getString("topic");
+		if(topic == null) {
+			throw new ConfigurationException("Kafka topic must be specified.");
+		}
 		try {
 			this.consumer = KafkaSourceUtil.getConsumer(context);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("IOException occur, {}", e.getMessage());
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			log.error("InterruptedException occur, {}", e.getMessage());
 		}
 		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
 		topicCountMap.put(topic, new Integer(1));
 		Map<String, List<KafkaStream<Message>>> consumerMap = consumer.createMessageStreams(topicCountMap);
-	    KafkaStream<Message> stream =  consumerMap.get(topic).get(0);
+		if(consumerMap == null) {
+			throw new ConfigurationException("topicCountMap is null");
+		}
+		List<KafkaStream<Message>> topicList = consumerMap.get(topic);
+		if(topicList == null || topicList.isEmpty()) {
+			throw new ConfigurationException("topicList is null or empty");
+		}
+	    KafkaStream<Message> stream =  topicList.get(0);
 	    it = stream.iterator();
 	}
 
