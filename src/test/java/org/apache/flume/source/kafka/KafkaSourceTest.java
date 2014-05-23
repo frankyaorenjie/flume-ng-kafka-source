@@ -48,7 +48,7 @@ public class KafkaSourceTest {
 
 	private KafkaSource mockKafkaSource;
 
-	private ConsumerIterator<Message> mockIt;
+	private ConsumerIterator<byte[], byte[]> mockIt;
 
 	@SuppressWarnings("rawtypes")
 	private MessageAndMetadata mockMessageAndMetadata;
