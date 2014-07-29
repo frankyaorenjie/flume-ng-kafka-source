@@ -46,9 +46,9 @@ public class KafkaSourceTest {
 	private static final Logger log = LoggerFactory.getLogger(KafkaSourceTest.class);
 
 
-	private KafkaSource mockKafkaSource;
+	private KafkaSource08 mockKafkaSource;
 
-	private ConsumerIterator<Message> mockIt;
+	private ConsumerIterator<byte[], byte[]> mockIt;
 
 	@SuppressWarnings("rawtypes")
 	private MessageAndMetadata mockMessageAndMetadata;
@@ -65,7 +65,7 @@ public class KafkaSourceTest {
 		mockChannelProcessor = mock(ChannelProcessor.class);
 		mockBuffer = mock(ByteBuffer.class);
 		mockMessage = mock(Message.class);
-		mockKafkaSource = new KafkaSource();
+		mockKafkaSource = new KafkaSource08();
 		
 		when(mockMessage.payload()).thenReturn(mockBuffer);
 		when(mockMessageAndMetadata.message()).thenReturn(mockMessage);
@@ -74,7 +74,7 @@ public class KafkaSourceTest {
 		field.setAccessible(true);
 		field.set(mockKafkaSource, mockChannelProcessor);
 
-		field = KafkaSource.class.getDeclaredField("it");
+		field = KafkaSource08.class.getDeclaredField("it");
 		field.setAccessible(true);
 		field.set(mockKafkaSource, mockIt);
 	}

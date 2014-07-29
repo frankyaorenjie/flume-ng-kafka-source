@@ -31,8 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class KafkaSourceUtil {
-	private static final Logger log = LoggerFactory.getLogger(KafkaSourceUtil.class);
+public class KafkaSourceUtil08 {
+	private static final Logger log = LoggerFactory.getLogger(KafkaSourceUtil08.class);
 
 	public static Properties getKafkaConfigProperties(Context context) {
 		log.info("context={}",context.toString());
