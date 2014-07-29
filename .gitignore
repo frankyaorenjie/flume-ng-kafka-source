@@ -12,4 +12,4 @@ bin/
 target/
 .classpath
 .settings/**
-
+.idea/**
