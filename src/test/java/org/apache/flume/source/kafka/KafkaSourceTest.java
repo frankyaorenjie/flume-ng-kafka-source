@@ -95,6 +95,26 @@ public class KafkaSourceTest {
 		when(mockIt.next()).thenReturn(mockMessageAndMetadata);
 		assertEquals(Status.READY, status);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testProcessItNotEmptyBatch() throws EventDeliveryException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		
+		Field field = KafkaSource08.class.getDeclaredField("batchUpperLimit");
+		field.setAccessible(true);
+		field.set(mockKafkaSource, 2);
+		
+		when(mockIt.next()).thenReturn(mockMessageAndMetadata);
+		when(mockIt.hasNext()).thenReturn(true);
+		when(mockIt.next()).thenReturn(mockMessageAndMetadata);
+		when(mockIt.hasNext()).thenReturn(true);
+		Status status = mockKafkaSource.process();
+		verify(mockIt, times(2)).hasNext();
+		verify(mockIt, times(2)).next();
+		verify(mockChannelProcessor, times(1)).processEventBatch(anyList());
+		when(mockIt.next()).thenReturn(mockMessageAndMetadata);
+		assertEquals(Status.READY, status);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -120,4 +140,6 @@ public class KafkaSourceTest {
 		verify(mockChannelProcessor, times(0)).processEventBatch(anyList());
 		assertEquals(Status.BACKOFF, status);
 	}
+	
+	
 }

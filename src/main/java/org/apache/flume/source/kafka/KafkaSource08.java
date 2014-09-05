@@ -53,6 +53,7 @@ public class KafkaSource08 extends AbstractSource implements Configurable, Polla
 	private ConsumerConnector consumer;
 	private ConsumerIterator<byte[], byte[]> it;
 	private String topic;
+	private int batchUpperLimit = 1;
 	
 	public Status process() throws EventDeliveryException {
 		List<Event> eventList = new ArrayList<Event>();
@@ -62,7 +63,8 @@ public class KafkaSource08 extends AbstractSource implements Configurable, Polla
 		Map<String, String> headers;
 //		byte [] bytes;
 		try {
-			if(it.hasNext()) {
+			int eventCounter = 0;
+			while (it.hasNext() && eventCounter++ <= batchUpperLimit) {
 				bytes = it.next().message();
 				event = new SimpleEvent();
 				headers = new HashMap<String, String>();
@@ -81,6 +83,8 @@ public class KafkaSource08 extends AbstractSource implements Configurable, Polla
 	}
 
 	public void configure(Context context) {
+		
+		batchUpperLimit = context.getInteger("batch.upper.limit", 1);
 		topic = context.getString("topic");
 		if(topic == null) {
 			throw new ConfigurationException("Kafka topic must be specified.");
