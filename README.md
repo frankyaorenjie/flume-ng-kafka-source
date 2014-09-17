@@ -1,7 +1,7 @@
 flume-ng-kafka-source
 ================
 
-This project is used for [flume-ng](https://github.com/apache/flume) to communicate with [kafka 0.7,2](http://kafka.apache.org/07/quickstart.html).
+This project is used for [flume-ng](https://github.com/apache/flume) to communicate with [kafka 0.7.2](http://kafka.apache.org/07/quickstart.html).
 
 Configuration of Kafka Source
 ----------
@@ -22,3 +22,5 @@ I've forked the project to bump the versions across the board. This affects:
 - scala 2.10
 
 To run maven, you will need to pass -Drat.numUnapprovedLicenses=100 to mvn becasue of rat's licence checks.
+
+Update: this is not necessary anymore, I've just updated thet rat config in this pom.xml

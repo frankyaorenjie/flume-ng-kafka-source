@@ -45,4 +45,57 @@
 			<artifactId>mockito-all</artifactId>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.rat</groupId>
+					<artifactId>apache-rat-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>verify.rat</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/.idea/</exclude>
+									<exclude>**/*.iml</exclude>
+									<exclude>**/nb-configuration.xml</exclude>
+									<exclude>.git/</exclude>
+									<exclude>patchprocess/</exclude>
+									<exclude>.gitignore</exclude>
+									<!-- ASF jenkins box puts the Maven repo in our root directory. -->
+									<exclude>.repository/</exclude>
+									<exclude>**/*.diff</exclude>
+									<exclude>**/*.patch</exclude>
+									<exclude>**/*.avsc</exclude>
+									<exclude>**/*.avro</exclude>
+									<exclude>**/docs/**</exclude>
+									<exclude>**/test/resources/**</exclude>
+									<exclude>**/.settings/*</exclude>
+									<exclude>**/.classpath</exclude>
+									<exclude>**/.project</exclude>
+									<exclude>**/target/**</exclude>
+									<exclude>release.properties</exclude>
+									<exclude>README*</exclude>
+									<exclude>RELEASE_NOTES*</exclude>
+									<exclude>**/*.md</exclude>
+									<exclude>pom.xml</exclude>
+								</excludes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
 </project>
