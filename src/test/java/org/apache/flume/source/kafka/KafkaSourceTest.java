@@ -60,6 +60,7 @@ public class KafkaSourceTest {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setup() throws Exception {
+        log.info("Setting up");
 		mockIt = mock(ConsumerIterator.class);
 		mockMessageAndMetadata = mock(MessageAndMetadata.class);
 		mockChannelProcessor = mock(ChannelProcessor.class);
